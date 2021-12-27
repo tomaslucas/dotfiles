@@ -52,8 +52,8 @@
 ;; Set frame transparency
 (set-frame-parameter (selected-frame) 'alpha tlucas/frame-transparency)
 (add-to-list 'default-frame-alist `(alpha . ,tlucas/frame-transparency))
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;;(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
@@ -72,7 +72,7 @@
  ;; If there is more than one, they won't work right.
  '(display-battery-mode nil)
  '(package-selected-packages
-   '(visual-fill-column org-bullets vterm lsp-ivy lsp-treemacs lsp-ui lsp-mode pyenv-mode counsel-projectile projectile pyvenv python-mode forge magit treemacs-evil evil-collection evil helpful counsel all-the-icons-ivy-rich ivy-rich which-key rainbow-delimiters doom-modeline doom-themes zenburn-theme ivy use-package)))
+   '(counsel-world-clock all-the-icons es-mode visual-fill-column org-bullets vterm lsp-ivy lsp-treemacs lsp-ui lsp-mode pyenv-mode counsel-projectile projectile pyvenv python-mode forge magit treemacs-evil evil-collection evil helpful counsel all-the-icons-ivy-rich ivy-rich which-key rainbow-delimiters doom-modeline doom-themes zenburn-theme ivy use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

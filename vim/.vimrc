@@ -2,7 +2,6 @@ let mapleader = ","
 syntax on " highlight syntax
 set number " show line numbers
 set relativenumber " show line numbers in a relative way
-set cursorline
 set noswapfile " disable the swapfile
 set hlsearch " highlight all results
 set ignorecase " ignore case in search
