@@ -95,7 +95,7 @@
  ;; If there is more than one, they won't work right.
  '(display-battery-mode nil)
  '(package-selected-packages
-   '(auto-package-update vertico dired dired-hide-dotfiles all-the-icons-dired dired-single counsel-world-clock all-the-icons es-mode visual-fill-column org-bullets vterm lsp-ivy lsp-treemacs lsp-ui lsp-mode pyenv-mode counsel-projectile projectile pyvenv python-mode forge magit treemacs-evil evil-collection evil helpful counsel all-the-icons-ivy-rich ivy-rich which-key rainbow-delimiters doom-modeline doom-themes zenburn-theme ivy use-package)))
+   '(vertico dired dired-hide-dotfiles all-the-icons-dired dired-single counsel-world-clock all-the-icons es-mode visual-fill-column org-bullets vterm lsp-ivy lsp-treemacs lsp-ui lsp-mode pyenv-mode counsel-projectile projectile pyvenv python-mode forge magit treemacs-evil evil-collection evil helpful counsel all-the-icons-ivy-rich ivy-rich which-key rainbow-delimiters doom-modeline doom-themes zenburn-theme ivy use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

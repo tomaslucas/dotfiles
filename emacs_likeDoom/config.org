@@ -1,0 +1,588 @@
+#+TITLE: TLUCAS' Emacs Config
+#+AUTHOR: Tomás Lucas (based on Derek Taylor video https://youtu.be/hoP4I9ounyQ?t=652) and System Crafters (https://raw.githubusercontent.com/daviwil/emacs-from-scratch/8c302a79bf5700f6ef0279a3daeeb4123ae8bd59/Emacs.org)
+
+* IMPORTANT! PUT THIS IN YOUR INIT.EL 
+I don't want to use init.el to config Emacs.  I want to use an org file to config Emacs because I like literate configs with lots of comments.  The following code block should be your init.el.  This tells init.el to use the source code blocks from this file (config.org).
+
+  #+begin_example
+    (org-babel-load-file
+     (expand-file-name
+      "config.org"
+    user-emacs-directory))
+  #+end_example
+
+
+
+* PACKAGE MANAGEMENT
+** Setup package.el to work with MELPA.
+
+  #+begin_src emacs-lisp
+    ;; Initialize package sources
+    (require 'package)
+
+    (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			     ("org" . "https://orgmode.org/elpa/")
+			     ("elpa" . "https://elpa.gnu.org/packages/")))
+
+    (package-initialize)
+    (unless package-archive-contents
+      (package-refresh-contents))
+
+  ;; Initialize use-package on non-Linux platforms
+    (unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+
+    (require 'use-package)
+    (setq use-package-always-ensure t)
+  #+end_src
+
+  
+** Installing use-package
+
+  #+begin_src emacs-lisp
+    (unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+    (setq use-package-always-ensure t)
+  #+end_src
+
+
+* Basic UI Configuration
+This section configures basic UI settings that remove unneeded elements to make Emacs look a lot more minimal and modern.  If you're just getting started in Emacs, the menu bar might be helpful so you can remove the =(menu-bar-mode -1)= line if you'd like to still see that.
+
+  #+begin_src emacs-lisp
+
+    (setq inhibit-startup-message t)
+
+    (scroll-bar-mode -1)        ; Disable visible scrollbar
+    (tool-bar-mode -1)          ; Disable the toolbar
+    (tooltip-mode -1)           ; Disable tooltips
+    (set-fringe-mode 10)        ; Give some breathing room
+
+    (menu-bar-mode -1)          ; Disable the menu bar
+
+    ;; Set up the visible bell
+    (setq visible-bell t)
+
+    ;; Display line numbers
+    (column-number-mode)
+    (global-display-line-numbers-mode t)
+
+    ;; Disable line numbers for some modes
+    (dolist (mode '(org-mode-hook
+		    term-mode-hook
+		    shell-mode-hook
+		    treemacs-mode-hook
+		    eshell-mode-hook))
+      (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+    #+end_src
+
+
+* General Keybindings
+General.el allows us to set keybindings.  As a longtime Doom Emacs user, I have grown accustomed to using SPC as the prefix key.  It certainly is easier on the hands than constantly using CTRL for a prefix.
+
+  #+begin_src emacs-lisp
+    ;; Make ESC quit prompts
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+    (use-package general
+    :config
+    (general-evil-setup t))
+  #+end_src
+ 
+* EVIL MODE
+    
+  #+begin_src emacs-lisp
+    (use-package evil
+      :init      ;; tweak evil's configuration before loading it
+      (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+      (setq evil-want-keybinding nil)
+      (setq evil-vsplit-window-right t)
+      (setq evil-split-window-below t)
+      (evil-mode))
+    (use-package evil-collection
+      :after evil
+      :config
+      (setq evil-collection-mode-list '(dashboard dired ibuffer))
+      (evil-collection-init))
+    (use-package evil-tutor)
+  #+end_src
+ 
+* Mappings
+   
+  #+begin_src emacs-lisp
+    (nvmap :keymaps 'override :prefix "SPC"
+	   "SPC"   '(counsel-M-x :which-key "M-x")
+	   "c c"   '(compile :which-key "Compile")
+	   "c C"   '(recompile :which-key "Recompile")
+	   "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
+	   "t t"   '(toggle-truncate-lines :which-key "Toggle truncate lines"))
+    (nvmap :keymaps 'override :prefix "SPC"
+	   "m *"   '(org-ctrl-c-star :which-key "Org-ctrl-c-star")
+	   "m +"   '(org-ctrl-c-minus :which-key "Org-ctrl-c-minus")
+	   "m ."   '(counsel-org-goto :which-key "Counsel org goto")
+	   "m e"   '(org-export-dispatch :which-key "Org export dispatch")
+	   "m f"   '(org-footnote-new :which-key "Org footnote new")
+	   "m h"   '(org-toggle-heading :which-key "Org toggle heading")
+	   "m i"   '(org-toggle-item :which-key "Org toggle item")
+	   "m n"   '(org-store-link :which-key "Org store link")
+	   "m o"   '(org-set-property :which-key "Org set property")
+	   "m t"   '(org-todo :which-key "Org todo")
+	   "m x"   '(org-toggle-checkbox :which-key "Org toggle checkbox")
+	   "m B"   '(org-babel-tangle :which-key "Org babel tangle")
+	   "m I"   '(org-toggle-inline-images :which-key "Org toggle inline imager")
+	   "m T"   '(org-todo-list :which-key "Org todo list")
+	   "o a"   '(org-agenda :which-key "Org agenda")
+	   )
+  #+end_src
+
+** Zooming In and Out
+   You can use the bindings CTRL plus =/- for zooming in/out.  You can also use CTRL plus the mouse wheel for zooming in/out.
+
+  #+begin_src emacs-lisp
+    ;; zoom in/out like we do everywhere else.
+    (global-set-key (kbd "C-=") 'text-scale-increase)
+    (global-set-key (kbd "C--") 'text-scale-decrease)
+    (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+    (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+  #+end_src
+
+
+* STARTUP PERFORMANCE
+  This section is where it make emacs faster to load.
+** Garbage collection
+Makes startup faster by reducing the frequency of garbage collection
+#+begin_src emacs-lisp
+;; Using garbage magic hack.
+ (use-package gcmh
+   :config
+   (gcmh-mode 1))
+;; Setting garbage collection threshold
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+
+;; Silence compiler warnings as they can be pretty disruptive (setq comp-async-report-warnings-errors nil)
+#+end_src
+** Native Compil
+#+begin_src emacs-lisp
+;; Silence compiler warnings as they can be pretty disruptive
+(if (boundp 'comp-deferred-compilation)
+    (setq comp-deferred-compilation nil)
+    (setq native-comp-deferred-compilation nil))
+;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; to skip the mtime checks on every *.elc file.
+(setq load-prefer-newer noninteractive)
+#+end_src
+
+* ALL THE ICONS
+This is an icon set that can be used with dashboard, dired, ibuffer and other Emacs programs.
+  
+#+begin_src emacs-lisp
+(use-package all-the-icons)
+#+end_src
+
+* BUFFERS AND BOOKMARKS
+
+#+begin_src emacs-lisp
+(nvmap :prefix "SPC"
+       "b b"   '(ibuffer :which-key "Ibuffer")
+       "b c"   '(clone-indirect-buffer-other-window :which-key "Clone indirect buffer other window")
+       "b k"   '(kill-current-buffer :which-key "Kill current buffer")
+       "b n"   '(next-buffer :which-key "Next buffer")
+       "b p"   '(previous-buffer :which-key "Previous buffer")
+       "b B"   '(ibuffer-list-buffers :which-key "Ibuffer list buffers")
+       "b K"   '(kill-buffer :which-key "Kill buffer"))
+#+end_src
+
+
+
+* DASHBOARD
+Emacs Dashboard is an extensible startup screen showing you recent files, bookmarks, agenda items and an Emacs banner.
+
+** Configuring Dashboard
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :init      ;; tweak dashboard config before loading it
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+  ;;(setq dashboard-startup-banner "~/.emacs.d/emacs-dash.png")  ;; use custom image as banner
+  (setq dashboard-center-content nil) ;; set to 't' for centered content
+  (setq dashboard-items '((recents . 5)
+                          (agenda . 5 )
+                          (bookmarks . 3)
+                          (projects . 3)
+                          (registers . 3)))
+  :config
+  (dashboard-setup-startup-hook)
+  (dashboard-modify-heading-icons '((recents . "file-text")
+			      (bookmarks . "book"))))
+#+end_src
+
+** Dashboard in Emacsclient
+This setting ensures that emacsclient always opens on *dashboard* rather than *scratch*.
+
+#+begin_src emacs-lisp
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+#+end_src
+
+** Dashboard in Emacsclient
+This setting ensures that emacsclient always opens on *dashboard* rather than *scratch*.
+
+#+begin_src emacs-lisp
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+#+end_src
+
+* DELETE SELECTION MODE
+By default in Emacs, we don't have ability to select text, and then start typing and our new text replaces the selection.  Let's fix that!
+
+#+begin_src emacs-lisp
+(delete-selection-mode t)
+#+end_src
+
+* ELFEED
+An RSS newsfeed reader for Emacs.
+
+#+begin_src emacs-lisp
+(use-package elfeed
+  :config
+  (setq elfeed-search-feed-face ":foreground #fff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
+                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
+                        ("https://hackaday.com/blog/feed/" hackaday linux)
+                        ("https://opensource.com/feed" opensource linux)
+                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                        ("https://itsfoss.com/feed/" itsfoss linux)
+                        ("https://www.zdnet.com/topic/linux/rss.xml" zdnet linux)
+                        ("https://www.phoronix.com/rss.php" phoronix linux)
+                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
+                        ("https://www.computerworld.com/index.rss" computerworld linux)
+                        ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
+                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                        ("https://betanews.com/feed" betanews linux)
+                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
+                        ("https://distrowatch.com/news/dwd.xml" distrowatch linux)))))
+
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
+(add-hook 'elfeed-show-mode-hook 'visual-line-mode)
+(evil-define-key 'normal elfeed-show-mode-map
+  (kbd "J") 'elfeed-goodies/split-show-next
+  (kbd "K") 'elfeed-goodies/split-show-prev)
+(evil-define-key 'normal elfeed-search-mode-map
+  (kbd "J") 'elfeed-goodies/split-show-next
+  (kbd "K") 'elfeed-goodies/split-show-prev)
+#+end_src
+
+* EMOJIS
+Emojify is an Emacs extension to display emojis. It can display github style emojis like :smile: or plain ascii ones like :). 
+
+#+begin_src emacs-lisp
+(use-package emojify
+  :hook (after-init . global-emojify-mode))
+#+end_src
+
+* EVALUATE ELISP EXPRESSIONS
+I choose to use the format 'SPC e' plus 'key' for these (I also use 'SPC e' for 'eww' keybindings).
+
+| COMMAND         | DESCRIPTION                                    | KEYBINDING |
+|-----------------+------------------------------------------------+------------|
+| eval-buffer     | /Evaluate elisp in buffer/                       | SPC e b    |
+| eval-defun      | /Evaluate the defun containing or after point/   | SPC e d    |
+| eval-expression | /Evaluate an elisp expression/                   | SPC e e    |
+| eval-last-sexp  | /Evaluate elisp expression before point/         | SPC e l    |
+| eval-region     | /Evaluate elisp in region/                       | SPC e r    |
+
+#+begin_src emacs-lisp
+(nvmap :states '(normal visual) :keymaps 'override :prefix "SPC"
+       "e b"   '(eval-buffer :which-key "Eval elisp in buffer")
+       "e d"   '(eval-defun :which-key "Eval defun")
+       "e e"   '(eval-expression :which-key "Eval elisp expression")
+       "e l"   '(eval-last-sexp :which-key "Eval last sexression")
+       "e r"   '(eval-region :which-key "Eval region"))
+#+end_src
+  
+* FILE MANAGER (DIRED)
+Dired is the file manager within Emacs.  Below, I setup keybindings for image previews (peep-dired).  I've chosen the format of 'SPC d' plus 'key'.
+
+** Keybindings To Open Dired
+| COMMAND    | DESCRIPTION                        | KEYBINDING |
+|------------+------------------------------------+------------|
+| dired      | /Open dired file manager/            | SPC d d    |
+| dired-jump | /Jump to current directory in dired/ | SPC d j    |
+
+** Keybindings Within Dired
+| COMMAND            | DESCRIPTION                                 | KEYBINDING |
+|--------------------+---------------------------------------------+------------|
+| dired-view-file    | /View file in dired/                          | SPC d v    |
+| dired-up-directory | /Go up in directory tree/                     | h          |
+| dired-find-file    | /Go down in directory tree (or open if file)/ | l          |
+
+** Keybindings For Peep-Dired-Mode
+| COMMAND              | DESCRIPTION                              | KEYBINDING |
+|----------------------+------------------------------------------+------------|
+| peep-dired           | /Toggle previews within dired/             | SPC d p    |
+| peep-dired-next-file | /Move to next file in peep-dired-mode/     | j          |
+| peep-dired-prev-file | /Move to previous file in peep-dired-mode/ | k          |
+
+#+begin_src emacs-lisp
+(use-package all-the-icons-dired)
+(use-package dired-open)
+(use-package peep-dired)
+
+(nvmap :states '(normal visual) :keymaps 'override :prefix "SPC"
+               "d d" '(dired :which-key "Open dired")
+               "d j" '(dired-jump :which-key "Dired jump to current")
+               "d p" '(peep-dired :which-key "Peep-dired"))
+
+(with-eval-after-load 'dired
+  ;;(define-key dired-mode-map (kbd "M-p") 'peep-dired)
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+  (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+  (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file))
+
+(add-hook 'peep-dired-hook 'evil-normalize-keymaps)
+;; Get file icons in dired
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;; With dired-open plugin, you can launch external programs for certain extensions
+;; For example, I set all .png files to open in 'sxiv' and all .mp4 files to open in 'mpv'
+(setq dired-open-extensions '(("gif" . "sxiv")
+                              ("jpg" . "sxiv")
+                              ("png" . "sxiv")
+                              ("mkv" . "mpv")
+                              ("mp4" . "mpv")))
+#+end_src
+
+* FILES
+** File-related Keybindings
+
+#+begin_src emacs-lisp
+(nvmap :states '(normal visual) :keymaps 'override :prefix "SPC"
+       "."     '(find-file :which-key "Find file")
+       "f f"   '(find-file :which-key "Find file")
+       "f r"   '(counsel-recentf :which-key "Recent files")
+       "f s"   '(save-buffer :which-key "Save file")
+       "f u"   '(sudo-edit-find-file :which-key "Sudo find file")
+       "f y"   '(dt/show-and-copy-buffer-path :which-key "Yank file path")
+       "f C"   '(copy-file :which-key "Copy file")
+       "f D"   '(delete-file :which-key "Delete file")
+       "f R"   '(rename-file :which-key "Rename file")
+       "f S"   '(write-file :which-key "Save file as...")
+       "f U"   '(sudo-edit :which-key "Sudo edit file"))
+#+end_src
+
+** Installing Some Useful File-related Modules
+Though 'recentf' is one way to find recent files although I prefer using 'counsel-recentf'.
+
+#+begin_src emacs-lisp
+(use-package recentf
+  :config
+  (recentf-mode))
+(use-package sudo-edit) ;; Utilities for opening files with sudo
+
+#+end_src
+
+** Useful File Functions
+#+begin_src emacs-lisp
+(defun dt/show-and-copy-buffer-path ()
+  "Show and copy the full path to the current file in the minibuffer."
+  (interactive)
+  ;; list-buffers-directory is the variable set in dired buffers
+  (let ((file-name (or (buffer-file-name) list-buffers-directory)))
+    (if file-name
+        (message (kill-new file-name))
+      (error "Buffer not visiting a file"))))
+(defun dt/show-buffer-path-name ()
+  "Show the full path to the current file in the minibuffer."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+        (progn
+          (message file-name)
+          (kill-new file-name))
+      (error "Buffer not visiting a file"))))
+#+end_src
+
+
+
+* GRAPHICAL USER INTERFACE SETTINGS
+  Let's make GNU Emacs look a little better.
+
+** Disable Menubar, Toolbars and Scrollbars
+   #+begin_src emacs-lisp
+     (menu-bar-mode -1)
+     (tool-bar-mode -1)
+     (scroll-bar-mode -1)
+    #+end_src
+  
+* FONTS
+  
+  #+begin_src emacs-lisp
+
+  #+end_src
+  
+* THEME
+  
+  #+begin_src emacs-lisp
+    (use-package doom-themes)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-one t)
+  #+end_src
+
+  #+begin_src emacs-lisp
+    (use-package doom-modeline)
+    (doom-modeline-mode 1)
+  #+end_src
+
+  
+* WHICH KEY
+Which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+
+=NOTE:= Which-key has an annoying bug that in some fonts and font sizes, the bottom row in which key gets covered up by the modeline.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init
+    (setq which-key-side-window-location 'bottom
+	  which-key-sort-order #'which-key-key-order-alpha
+	  which-key-sort-uppercase-first nil
+	  which-key-add-column-padding 1
+	  which-key-max-display-columns nil
+	  which-key-min-display-lines 6
+	  which-key-side-window-slot -10
+	  which-key-side-window-max-height 0.25
+	  which-key-idle-delay 0.8
+	  which-key-max-description-length 25
+	  which-key-allow-imprecise-window-fit t
+	  which-key-separator " → " ))
+  (which-key-mode)
+#+end_src
+
+* PROJECTILE
+#+begin_src emacs-lisp
+  (use-package projectile
+    :config
+    (projectile-global-mode 1))
+#+end_src
+
+* File Management
+  Taken from (https://raw.githubusercontent.com/daviwil/emacs-from-scratch/8c302a79bf5700f6ef0279a3daeeb4123ae8bd59/Emacs.org)
+** Dired
+
+Dired is a built-in file manager for Emacs that does some pretty amazing things!  Here are some key bindings you should try out:
+
+*** Key Bindings
+
+**** Navigation
+
+*Emacs* / *Evil*
+- =n= / =j= - next line
+- =p= / =k= - previous line
+- =j= / =J= - jump to file in buffer
+- =RET= - select file or directory
+- =^= - go to parent directory
+- =S-RET= / =g O= - Open file in "other" window
+- =M-RET= - Show file in other window without focusing (previewing files)
+- =g o= (=dired-view-file=) - Open file but in a "preview" mode, close with =q=
+- =g= / =g r= Refresh the buffer with =revert-buffer= after changing configuration (and after filesystem changes!)
+
+**** Marking files
+
+- =m= - Marks a file
+- =u= - Unmarks a file
+- =U= - Unmarks all files in buffer
+- =* t= / =t= - Inverts marked files in buffer
+- =% m= - Mark files in buffer using regular expression
+- =*= - Lots of other auto-marking functions
+- =k= / =K= - "Kill" marked items (refresh buffer with =g= / =g r= to get them back)
+- Many operations can be done on a single file if there are no active marks!
+ 
+**** Copying and Renaming files
+
+- =C= - Copy marked files (or if no files are marked, the current file)
+- Copying single and multiple files
+- =U= - Unmark all files in buffer
+- =R= - Rename marked files, renaming multiple is a move!
+- =% R= - Rename based on regular expression: =^test= , =old-\&=
+
+* Power command*: =C-x C-q= (=dired-toggle-read-only=) - Makes all file names in the buffer editable directly to rename them!  Press =Z Z= to confirm renaming or =Z Q= to abort.
+
+**** Deleting files
+
+- =D= - Delete marked file
+- =d= - Mark file for deletion
+- =x= - Execute deletion for marks
+- =delete-by-moving-to-trash= - Move to trash instead of deleting permanently
+
+**** Creating and extracting archives
+
+- =Z= - Compress or uncompress a file or folder to (=.tar.gz=)
+- =c= - Compress selection to a specific file
+- =dired-compress-files-alist= - Bind compression commands to file extension
+
+**** Other common operations
+
+- =T= - Touch (change timestamp)
+- =M= - Change file mode
+- =O= - Change file owner
+- =G= - Change file group
+- =S= - Create a symbolic link to this file
+- =L= - Load an Emacs Lisp file into Emacs
+
+*** Configuration
+
+#+begin_src emacs-lisp
+
+  (use-package dired
+    :ensure nil
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "l" 'dired-single-buffer))
+
+  (use-package dired-single)
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
+
+  ;;(use-package dired-open
+    ;;:config
+    ;;;; Doesn't work as expected!
+    ;;;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+    ;;(setq dired-open-extensions '(("png" . "feh")
+                                  ;;("mkv" . "mpv"))))
+
+  (use-package dired-hide-dotfiles
+    :hook (dired-mode . dired-hide-dotfiles-mode)
+    :config
+    (evil-collection-define-key 'normal 'dired-mode-map
+      "H" 'dired-hide-dotfiles-mode))
+
+#+end_src
+
+
