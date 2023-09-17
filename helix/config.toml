@@ -1,13 +1,24 @@
-theme = "base16_transparent"
+theme = "tokyonight_storm"
 
 [editor]
 line-number = "relative"
 true-color = true
+rulers = [80]
+shell = ["zsh", "-c"]
+bufferline = "multiple"
+text-width = 80
+auto-completion = true
+
+[editor.soft-wrap]
+enable = true
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
+
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
 
 [editor.file-picker]
 hidden = false
