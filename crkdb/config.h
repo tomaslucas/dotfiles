@@ -20,6 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+// https://docs.qk.fm/#/feature_debounce_type
+// Configurado en ./keyboards/crkbd/config.h:49
+// #define DEBOUNCE 10
 // #define USE_MATRIX_I2C
 
 /* Select hand configuration */
@@ -28,8 +31,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define MASTER_RIGHT
 // #define EE_HANDS
 
+// Configuration fro home row mods
 // #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 200
+// Precent normal rollover on alphas from accidentally triggering mods.
+#define IGNORE_MOD_TAP_INTERRUPT
+// Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
+#define QUICK_TAB_TERM 0
 
 #ifdef RGBLIGHT_ENABLE
 #define RGBLIGHT_EFFECT_BREATHING
