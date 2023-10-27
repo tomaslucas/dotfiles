@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "notes": "https://github.com/manna-harbour/miryoku",
+  "notes": "Based on https://github.com/manna-harbour/miryoku",
   "documentation": "\"This file is a QMK Configurator export. You can import this at <https://config.qmk.fm>. It can also be used directly with QMK's source code.\n\nTo setup your QMK environment check out the tutorial: <https://docs.qmk.fm/#/newbs>\n\nYou can convert this file to a keymap.c using this command: `qmk json2c {keymap}`\n\nYou can compile this keymap using this command: `qmk compile {keymap}`\"\n",
   "keyboard": "crkbd/rev1",
   "keymap": "tlucas_miryoku",
@@ -44,8 +44,8 @@
       "KC_SLSH",
       "KC_RSFT",
       "LT(3,KC_ESC)",
-      "LT(1,KC_TAB)",
-      "LT(2,KC_SPC)",
+      "LT(1,KC_SPC)",
+      "LT(2,KC_TAB)",
       "LT(5,KC_ENT)",
       "LT(4,KC_BSPC)",
       "LT(6,KC_DEL)"
@@ -315,5 +315,5 @@
       "KC_NO"
     ]
   ],
-  "author": "Manna Harbour"
+  "author": "Tomás Lucas"
 }
