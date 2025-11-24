@@ -44,7 +44,7 @@ Configuración personalizada de ZSH con soporte multiplataforma (Linux y macOS).
 #### Claude
 - `cld` - claude
 - `cldp` - claude -p
-- `cldy` - claude
+- `cldy` - claude --dangerously-skip-permissions
 
 ### Keybindings
 - **Ctrl+Left/Right**: Moverse por palabras
@@ -118,7 +118,58 @@ brew install fd
 brew install direnv
 ```
 
-### 4. Recargar configuración
+### 4. Herramientas opcionales (se configuran automáticamente si están instaladas)
+
+El `.zshrc` detecta y configura automáticamente estas herramientas si las tienes instaladas. **No son obligatorias**, pero si las usas, el .zshrc las configurará por ti:
+
+#### NVM (Node Version Manager)
+
+**Linux y macOS:**
+```bash
+# Instalación mediante script oficial
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# Después de instalar, el .zshrc lo configurará automáticamente
+# Uso: nvm install 20, nvm use 20, etc.
+```
+
+#### Rust y Cargo
+
+**Linux y macOS:**
+```bash
+# Instalación mediante rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# El .zshrc cargará automáticamente el entorno de Cargo
+```
+
+#### Bun (JavaScript runtime)
+
+**Linux:**
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+**macOS:**
+```bash
+brew install bun
+# O también: curl -fsSL https://bun.sh/install | bash
+```
+
+#### Rancher Desktop (alternativa a Docker Desktop)
+
+**Linux:**
+```bash
+# Descarga desde https://rancherdesktop.io/
+# O mediante gestor de paquetes según tu distribución
+```
+
+**macOS:**
+```bash
+brew install --cask rancher
+```
+
+### 5. Recargar configuración
 
 ```bash
 # Recarga la configuración
@@ -131,15 +182,15 @@ source ~/.zshrc
 
 ### Modificar el prompt
 
-Edita la sección `PROMPT=` en el archivo `.zshrc` (línea 40-42).
+Edita la sección `PROMPT=` en el archivo `.zshrc` (alrededor de la línea 41).
 
 ### Añadir más aliases
 
-Añade tus aliases personalizados al final del archivo `.zshrc`.
+Añade tus aliases personalizados al final del archivo `.zshrc` en la sección de aliases adicionales.
 
 ### Cambiar colores de FZF
 
-Modifica la variable `FZF_DEFAULT_OPTS` (línea 228-236).
+Modifica la variable `FZF_DEFAULT_OPTS` (alrededor de la línea 218-226).
 
 ## Compatibilidad
 
@@ -147,6 +198,7 @@ Esta configuración detecta automáticamente el sistema operativo y ajusta:
 - Rutas de plugins (diferentes en Linux/macOS)
 - Comandos específicos del OS (dircolors, notify-send, etc.)
 - Keybindings específicos de terminal
+- Carga herramientas opcionales solo si están instaladas (NVM, Cargo, Bun, Rancher Desktop, direnv)
 
 ## Troubleshooting
 
@@ -190,9 +242,35 @@ Para instalar eza:
 - Linux: `sudo apt install eza`
 - macOS: `brew install eza`
 
+### Verificar si las herramientas opcionales están configuradas
+
+Para verificar si NVM, Cargo, Bun u otras herramientas opcionales se cargaron correctamente:
+
+```bash
+# Verificar NVM
+command -v nvm
+
+# Verificar Cargo/Rust
+command -v cargo
+
+# Verificar Bun
+command -v bun
+
+# Verificar direnv
+command -v direnv
+
+# Ver todas las variables de entorno configuradas
+env | grep -E "NVM|CARGO|BUN|RANCHER"
+```
+
+Si alguna herramienta no se carga, verifica que esté instalada en la ubicación esperada:
+- NVM: `~/.nvm/nvm.sh`
+- Cargo: `~/.cargo/env`
+- Rancher Desktop: `~/.rd/bin` (macOS) o `~/.rd/bin` (Linux)
+
 ## Notas
 
-- **Historial**: Se guarda en `~/.zsh_history` (1000 líneas)
-- **Undo persistente**: Vim guarda historial de deshacer en `~/.vim/undodir`
+- **Historial**: Se guarda en `~/.zsh_history` (10000 líneas)
 - **Autocompletado**: Case-insensitive por defecto
 - **Autocorrección**: Activada para comandos y argumentos
+- **Detección automática de OS**: El .zshrc detecta si estás en Linux o macOS y ajusta rutas y configuraciones automáticamente

@@ -46,9 +46,9 @@ setopt histignorealldups sharehistory
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000
-SAVEHIST=1000
+# Keep 10000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=10000
+SAVEHIST=10000
 HISTFILE=~/.zsh_history
 
 # Use modern completion system
@@ -92,6 +92,25 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # ===== Direnv Hook =====
 if command -v direnv &> /dev/null; then
     eval "$(direnv hook zsh)"
+fi
+
+# ===== Cargo/Rust Configuration =====
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
+
+# ===== NVM Configuration =====
+if [ -d "$HOME/.nvm" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
+# ===== Rancher Desktop Configuration =====
+if [[ "$IS_MAC" == true ]] && [ -d "$HOME/.rd/bin" ]; then
+    export PATH="$HOME/.rd/bin:$PATH"
+elif [[ "$IS_LINUX" == true ]] && [ -d "$HOME/.rd/bin" ]; then
+    export PATH="$HOME/.rd/bin:$PATH"
 fi
 
 # ===== Color Support for ls and grep =====
