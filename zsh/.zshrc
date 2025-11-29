@@ -14,6 +14,10 @@ else
     export IS_LINUX=false
 fi
 
+# ===== GIT LANGUAGE CONFIGURATION =====
+# Use English for Git messages (consistent across all systems)
+export LC_MESSAGES=en_US.UTF-8
+
 # ===== PROMPT CONFIGURATION =====
 
 # Load version control information
@@ -37,9 +41,14 @@ function virtualenv_info {
     fi
 }
 
-# Build the prompt
-PROMPT='%F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
+# Build the prompt - muestra hostname solo si es remoto
+if [[ -n "$SSH_CONNECTION" ]]; then
+    PROMPT='%F{cyan}%m%f %F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
 %F{green}❯%f '
+else
+    PROMPT='%F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
+%F{green}❯%f '
+fi
 
 setopt histignorealldups sharehistory
 
