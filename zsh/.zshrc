@@ -169,6 +169,9 @@ alias vnv='source .venv/bin/activate'
 alias cld='claude'
 alias cldp='claude -p'
 alias cldy='claude --dangerously-skip-permissions'
+alias cldyh='claude --dangerously-skip-permissions --model haiku'
+alias cldys='claude --dangerously-skip-permissions --model sonnet'
+alias cldyo='claude --dangerously-skip-permissions --model opus'
 
 # ===== Alert Alias =====
 if [[ "$IS_LINUX" == true ]]; then
@@ -324,6 +327,10 @@ setopt PUSHD_IGNORE_DUPS
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+
+# Suffix aliases - ejecuta archivos directamente según su extensión
+alias -s ts='bun'
+alias -s py='uv run'
 
 # Git shortcuts
 alias gs='git status'
