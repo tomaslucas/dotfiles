@@ -1,0 +1,152 @@
+{
+  "AWS S3 Client": {
+    "prefix": "s3client",
+    "description": "Boto3 S3 client initialization",
+    "body": [
+      "import boto3",
+      "",
+      "s3 = boto3.client('s3')",
+      "$0"
+    ]
+  },
+  
+  "AWS S3 Resource": {
+    "prefix": "s3resource",
+    "description": "Boto3 S3 resource initialization",
+    "body": [
+      "import boto3",
+      "",
+      "s3 = boto3.resource('s3')",
+      "$0"
+    ]
+  },
+  
+  "Pandas Read Parquet": {
+    "prefix": "pdparquet",
+    "description": "Read Parquet file with pandas",
+    "body": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_parquet('$1')",
+      "$0"
+    ]
+  },
+  
+  "Pandas Read CSV": {
+    "prefix": "pdcsv",
+    "description": "Read CSV file with pandas",
+    "body": [
+      "import pandas as pd",
+      "",
+      "df = pd.read_csv('$1')",
+      "$0"
+    ]
+  },
+  
+  "AWS Glue Context": {
+    "prefix": "gluecontext",
+    "description": "Initialize AWS Glue context",
+    "body": [
+      "from awsglue.context import GlueContext",
+      "from pyspark.context import SparkContext",
+      "",
+      "sc = SparkContext()",
+      "glueContext = GlueContext(sc)",
+      "spark = glueContext.spark_session",
+      "$0"
+    ]
+  },
+  
+  "Python Main Guard": {
+    "prefix": "main",
+    "description": "if __name__ == '__main__' guard",
+    "body": [
+      "def main():",
+      "    $0",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    main()"
+    ]
+  },
+  
+  "Python Dataclass": {
+    "prefix": "dataclass",
+    "description": "Python dataclass definition",
+    "body": [
+      "from dataclasses import dataclass",
+      "",
+      "@dataclass",
+      "class ${1:ClassName}:",
+      "    ${2:field}: ${3:str}",
+      "    $0"
+    ]
+  },
+  
+  "Python Logger Setup": {
+    "prefix": "logger",
+    "description": "Setup basic logger",
+    "body": [
+      "import logging",
+      "",
+      "logger = logging.getLogger(__name__)",
+      "logging.basicConfig(",
+      "    level=logging.${1:INFO},",
+      "    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'",
+      ")",
+      "$0"
+    ]
+  },
+  
+  "Python Type Hints Function": {
+    "prefix": "deft",
+    "description": "Function with type hints",
+    "body": [
+      "def ${1:function_name}(${2:param}: ${3:str}) -> ${4:None}:",
+      "    \"\"\"${5:Description}\"\"\"",
+      "    $0"
+    ]
+  },
+  
+  "Try Except Block": {
+    "prefix": "try",
+    "description": "Try-except block with logging",
+    "body": [
+      "try:",
+      "    $1",
+      "except ${2:Exception} as e:",
+      "    logger.error(f\"${3:Error message}: {e}\")",
+      "    $0"
+    ]
+  },
+  
+  "Pathlib Import": {
+    "prefix": "pathlib",
+    "description": "Import and use pathlib.Path",
+    "body": [
+      "from pathlib import Path",
+      "",
+      "${1:file_path} = Path('$2')",
+      "$0"
+    ]
+  },
+  
+  "Python Docstring": {
+    "prefix": "docs",
+    "description": "Google-style docstring",
+    "body": [
+      "\"\"\"${1:Short description}.",
+      "",
+      "Args:",
+      "    ${2:param_name} (${3:type}): ${4:Description}",
+      "",
+      "Returns:",
+      "    ${5:return_type}: ${6:Description}",
+      "",
+      "Raises:",
+      "    ${7:ErrorType}: ${8:Description}",
+      "\"\"\"",
+      "$0"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+# Optional Extensions - Instalar manualmente si necesitas
+# No están en core porque añaden overhead y solo son útiles en casos específicos
+
+# Seguridad - Ocultar secretos al compartir pantalla
+1nvitr0.censitive
+
+# Git avanzado - Solo si revisas history/blame frecuentemente
+eamodio.gitlens
+mhutchie.git-graph
+
+# CSV - Solo si trabajas mucho con CSVs
+mechatroner.rainbow-csv
+
+# Colaboración en tiempo real
+ms-vsliveshare.vsliveshare

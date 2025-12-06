@@ -1,0 +1,189 @@
+{
+  "Code Block": {
+    "prefix": "```",
+    "description": "Code block with language",
+    "body": [
+      "```${1:python}",
+      "$0",
+      "```"
+    ]
+  },
+  
+  "Knowledge Base Header": {
+    "prefix": "kbheader",
+    "description": "Standard header for Knowledge Base documents",
+    "body": [
+      "# $1",
+      "",
+      "**Created:** ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "**Updated:** ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "**Status:** ${2|Draft,In Progress,Complete,Archived|}",
+      "**Tags:** ${3:tag1, tag2}",
+      "",
+      "## Context",
+      "",
+      "$0",
+      "",
+      "## References",
+      "",
+      "- "
+    ]
+  },
+  
+  "Investigation Template": {
+    "prefix": "investigation",
+    "description": "Template for technical investigations",
+    "body": [
+      "# ${1:Investigation Title}",
+      "",
+      "**Date:** ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "**Objective:** ${2:What are we trying to understand/solve?}",
+      "",
+      "## Hypothesis",
+      "",
+      "${3:What do we think is happening?}",
+      "",
+      "## Methodology",
+      "",
+      "1. ${4:Step 1}",
+      "2. ",
+      "",
+      "## Findings",
+      "",
+      "$0",
+      "",
+      "## Conclusions",
+      "",
+      "- ",
+      "",
+      "## Next Steps",
+      "",
+      "- "
+    ]
+  },
+  
+  "Mermaid Diagram": {
+    "prefix": "mermaid",
+    "description": "Mermaid diagram block",
+    "body": [
+      "```mermaid",
+      "${1|graph TD,sequenceDiagram,classDiagram,stateDiagram,erDiagram,flowchart TD|}",
+      "    $0",
+      "```"
+    ]
+  },
+  
+  "Mermaid Flowchart": {
+    "prefix": "flowchart",
+    "description": "Mermaid flowchart template",
+    "body": [
+      "```mermaid",
+      "flowchart ${1|TD,LR|}",
+      "    ${2:A}[${3:Start}] --> ${4:B}[${5:Process}]",
+      "    ${4:B} --> ${6:C}[${7:End}]",
+      "    $0",
+      "```"
+    ]
+  },
+  
+  "Callout Note": {
+    "prefix": "note",
+    "description": "Note/callout block",
+    "body": [
+      "> **Note:** $0"
+    ]
+  },
+  
+  "Callout Warning": {
+    "prefix": "warning",
+    "description": "Warning callout block",
+    "body": [
+      "> **⚠️ Warning:** $0"
+    ]
+  },
+  
+  "Callout Important": {
+    "prefix": "important",
+    "description": "Important callout block",
+    "body": [
+      "> **💡 Important:** $0"
+    ]
+  },
+  
+  "Table 2x3": {
+    "prefix": "table",
+    "description": "Basic markdown table",
+    "body": [
+      "| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |",
+      "| ------------- | ------------- | ------------- |",
+      "| ${4:Data 1}   | ${5:Data 2}   | ${6:Data 3}   |",
+      "| $0            |               |               |"
+    ]
+  },
+  
+  "Task List": {
+    "prefix": "tasks",
+    "description": "Task list with checkboxes",
+    "body": [
+      "- [ ] ${1:Task 1}",
+      "- [ ] ${2:Task 2}",
+      "- [ ] $0"
+    ]
+  },
+  
+  "Details/Summary": {
+    "prefix": "details",
+    "description": "Collapsible details section",
+    "body": [
+      "<details>",
+      "<summary>${1:Click to expand}</summary>",
+      "",
+      "$0",
+      "",
+      "</details>"
+    ]
+  },
+  
+  "AWS Architecture Decision": {
+    "prefix": "adr",
+    "description": "Architecture Decision Record for AWS",
+    "body": [
+      "# ADR ${1:001}: ${2:Decision Title}",
+      "",
+      "**Date:** ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "**Status:** ${3|Proposed,Accepted,Deprecated,Superseded|}",
+      "",
+      "## Context",
+      "",
+      "${4:What is the issue we're trying to solve?}",
+      "",
+      "## Decision",
+      "",
+      "${5:What is the change we're proposing?}",
+      "",
+      "## Consequences",
+      "",
+      "### Positive",
+      "",
+      "- $0",
+      "",
+      "### Negative",
+      "",
+      "- ",
+      "",
+      "## Alternatives Considered",
+      "",
+      "1. **${6:Alternative 1}**",
+      "   - Pros: ",
+      "   - Cons: "
+    ]
+  },
+  
+  "Code Comment Inline": {
+    "prefix": "comment",
+    "description": "Inline code with comment",
+    "body": [
+      "`${1:code}` - ${2:explanation}$0"
+    ]
+  }
+}
