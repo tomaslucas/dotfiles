@@ -83,24 +83,28 @@ backup_config() {
     fi
 }
 
-# Crear symlink con verificación
+# Crear symlink con verificación (sin borrar datos)
 create_symlink() {
     local source=$1
     local target=$2
     local name=$3
-    
-    # Eliminar target si existe y no es symlink
-    if [[ -e "$target" ]] && [[ ! -L "$target" ]]; then
-        rm -rf "$target"
-        info "  Eliminado $name existente"
-    fi
-    
+    local backup_suffix=".backup-$(date +%Y%m%d-%H%M%S)"
+
     # Crear directorio padre si no existe
     mkdir -p "$(dirname "$target")"
-    
+
+    # Si existe y no es symlink, moverlo a backup (más seguro que rm)
+    if [[ -e "$target" ]] && [[ ! -L "$target" ]]; then
+        info "  Moviendo $name existente a backup: ${name}${backup_suffix}"
+        mv "$target" "${target}${backup_suffix}"
+    elif [[ -L "$target" ]]; then
+        # Si ya es symlink, solo eliminarlo (es seguro)
+        rm -f "$target"
+    fi
+
     # Crear symlink
-    ln -sfn "$source" "$target"
-    
+    ln -sn "$source" "$target"
+
     # Verificar
     if [[ -L "$target" ]] && [[ -e "$target" ]]; then
         info "  ✓ Symlink creado: $name"
@@ -248,6 +252,15 @@ main() {
     echo "  3. Instala extensiones opcionales si las necesitas:"
     echo "     cat $dotfiles_dir/extensions-optional.txt"
     echo
+
+    # Informar sobre backups locales si existen
+    if ls "$vscode_dir"/*.backup-* &> /dev/null; then
+        info "Nota: Se crearon backups locales en:"
+        echo "  $vscode_dir/*.backup-*"
+        echo "  Puedes eliminarlos manualmente si todo funciona correctamente"
+        echo
+    fi
+
     info "¡Listo! 🎉"
 }
 
