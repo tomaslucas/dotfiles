@@ -4,16 +4,13 @@
   // ============================================================================
   // Este archivo debe funcionar en macOS y Linux sin modificaciones.
   // Settings específicos de máquina van comentados al final como ejemplos.
-  
   // === UI: Mínima distracción ===
   "workbench.sideBar.location": "right",
-  "workbench.activityBar.visible": true,
   "workbench.statusBar.visible": true,
   "workbench.colorTheme": "Default Dark Modern",
   "editor.minimap.enabled": false,
   "breadcrumbs.enabled": true,
   "window.zoomLevel": 0,
-  
   // === Editor: Comportamiento ===
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
@@ -26,7 +23,6 @@
   "editor.unicodeHighlight.nonBasicASCII": false,
   "editor.accessibilitySupport": "off",
   "editor.mouseWheelZoom": false,
-  
   // === Files ===
   "files.autoSave": "onFocusChange",
   "files.trimTrailingWhitespace": true,
@@ -44,7 +40,6 @@
     "**/.mypy_cache": true,
     "**/.ruff_cache": true
   },
-  
   // === Python ===
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
@@ -57,16 +52,17 @@
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
     },
-    "editor.rulers": [88, 120]
+    "editor.rulers": [
+      88,
+      120
+    ]
   },
-  
   // === Jupyter ===
   "jupyter.askForKernelRestart": false,
   "jupyter.interactiveWindow.textEditor.executeSelection": true,
   "notebook.output.textLineLimit": 500,
   "notebook.lineNumbers": "on",
   "ipynb.pasteImagesAsAttachments.enabled": false,
-  
   // === Markdown ===
   "[markdown]": {
     "editor.wordWrap": "on",
@@ -81,24 +77,20 @@
     "**/*.md": "assets/${documentBaseName}/${fileName}"
   },
   "markdown.preview.breaks": true,
-  
   // === XML ===
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
-  
   // === Terminal ===
   "terminal.integrated.fontSize": 13,
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.cursorBlinking": true,
-  
   // === Git ===
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "git.suggestSmartCommit": false,
   "scm.defaultViewMode": "tree",
-  
   // === Search ===
   "search.exclude": {
     "**/node_modules": true,
@@ -108,46 +100,36 @@
     "**/venv": true,
     "**/__pycache__": true
   },
-  
   // === Privacidad y Telemetría ===
   "telemetry.telemetryLevel": "off",
   "workbench.enableExperiments": false,
   "aws.telemetry": false,
   "amazonQ.telemetry": false,
-  
   // === Claude Code / MCP ===
   "chat.mcp.gallery.enabled": true,
-  
   // === Copilot ===
   "github.copilot.enable": {
     "*": true,
     "markdown": true,
     "plaintext": false
   },
-  
   // ============================================================================
   // MACHINE-SPECIFIC SETTINGS
   // ============================================================================
   // Estos settings son específicos de cada máquina.
   // Descomenta y modifica según tu entorno:
-  
   // --- Python Interpreter (mejor manejarlo por workspace) ---
   // Linux:
   // "python.defaultInterpreterPath": "/bin/python3",
-  
   // macOS (Homebrew):
   // "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
-  
   // macOS (pyenv):
   // "python.defaultInterpreterPath": "${env:HOME}/.pyenv/shims/python",
-  
   // --- Terminal Shell ---
   // macOS:
   // "terminal.integrated.defaultProfile.osx": "zsh",
-  
   // Linux:
   // "terminal.integrated.defaultProfile.linux": "bash",
-  
   // --- Window Profile (si usas profiles) ---
   // "window.newWindowProfile": "python",
 }
