@@ -4,4 +4,9 @@
 // Este archivo lo poblaremos en Fase 4 cuando aprendamos shortcuts efectivos.
 // Por ahora, VSCode usará los keybindings por defecto.
 
-[]
+[
+    {
+        "key": "ctrl+shift+backspace",
+        "command": "workbench.action.terminal.kill"
+    }
+]

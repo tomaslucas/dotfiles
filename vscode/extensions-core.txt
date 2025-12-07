@@ -1,7 +1,7 @@
 # Core Extensions - Instalar en TODAS las máquinas
 # Python
 ms-python.python
-ms-python.pylance
+ms-python.vscode-pylance
 ms-python.debugpy
 charliermarsh.ruff
 
