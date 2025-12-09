@@ -8,7 +8,6 @@
       "```"
     ]
   },
-  
   "Knowledge Base Header": {
     "prefix": "kbheader",
     "description": "Standard header for Knowledge Base documents",
@@ -29,7 +28,6 @@
       "- "
     ]
   },
-  
   "Investigation Template": {
     "prefix": "investigation",
     "description": "Template for technical investigations",
@@ -61,7 +59,6 @@
       "- "
     ]
   },
-  
   "Mermaid Diagram": {
     "prefix": "mermaid",
     "description": "Mermaid diagram block",
@@ -72,7 +69,6 @@
       "```"
     ]
   },
-  
   "Mermaid Flowchart": {
     "prefix": "flowchart",
     "description": "Mermaid flowchart template",
@@ -85,7 +81,6 @@
       "```"
     ]
   },
-  
   "Callout Note": {
     "prefix": "note",
     "description": "Note/callout block",
@@ -93,7 +88,6 @@
       "> **Note:** $0"
     ]
   },
-  
   "Callout Warning": {
     "prefix": "warning",
     "description": "Warning callout block",
@@ -101,7 +95,6 @@
       "> **⚠️ Warning:** $0"
     ]
   },
-  
   "Callout Important": {
     "prefix": "important",
     "description": "Important callout block",
@@ -109,7 +102,6 @@
       "> **💡 Important:** $0"
     ]
   },
-  
   "Table 2x3": {
     "prefix": "table",
     "description": "Basic markdown table",
@@ -120,7 +112,6 @@
       "| $0            |               |               |"
     ]
   },
-  
   "Task List": {
     "prefix": "tasks",
     "description": "Task list with checkboxes",
@@ -130,7 +121,6 @@
       "- [ ] $0"
     ]
   },
-  
   "Details/Summary": {
     "prefix": "details",
     "description": "Collapsible details section",
@@ -143,7 +133,6 @@
       "</details>"
     ]
   },
-  
   "AWS Architecture Decision": {
     "prefix": "adr",
     "description": "Architecture Decision Record for AWS",
@@ -178,7 +167,6 @@
       "   - Cons: "
     ]
   },
-  
   "Code Comment Inline": {
     "prefix": "comment",
     "description": "Inline code with comment",
@@ -186,7 +174,6 @@
       "`${1:code}` - ${2:explanation}$0"
     ]
   },
-  
   "Workflow - Linear": {
     "prefix": "wf-linear",
     "description": "Linear workflow: Read → Process → Output",
@@ -219,7 +206,6 @@
       "$0"
     ]
   },
-  
   "Workflow - Conditional": {
     "prefix": "wf-branch",
     "description": "Workflow with branching logic",
@@ -259,7 +245,6 @@
       "$0"
     ]
   },
-  
   "Command - Executable": {
     "prefix": "cmd-exec",
     "description": "Executable command with full context",
@@ -331,7 +316,6 @@
       "$0"
     ]
   },
-  
   "Skill - Routable": {
     "prefix": "skill-route",
     "description": "Skill with routing triggers and pattern matching",
@@ -402,7 +386,6 @@
       "$0"
     ]
   },
-  
   "Prompt - Bounded": {
     "prefix": "prompt-bound",
     "description": "System prompt with explicit boundaries",
@@ -477,7 +460,6 @@
       "$0"
     ]
   },
-  
   "Meta - Generator": {
     "prefix": "meta-gen",
     "description": "Meta-prompt that generates structured output",
@@ -564,7 +546,6 @@
       "$0"
     ]
   },
-  
   "Plan - Executable": {
     "prefix": "plan-exec",
     "description": "Executable implementation plan with validation",
@@ -655,7 +636,6 @@
       "$0"
     ]
   },
-  
   "Decision - Tree": {
     "prefix": "decision-tree",
     "description": "Decision tree with all branches explicit",
@@ -717,7 +697,6 @@
       "$0"
     ]
   },
-  
   "Experiment Documentation": {
     "prefix": "exp-doc",
     "description": "Document multi-agent experiment",
@@ -782,7 +761,6 @@
       "$0"
     ]
   },
-  
   "Agent Capability Profile": {
     "prefix": "agent-profile",
     "description": "Document agent capabilities and limitations",
@@ -859,7 +837,6 @@
       "$0"
     ]
   },
-  
   "Feature Spec (Universal)": {
     "prefix": "spec-feature",
     "description": "Agent-agnostic feature specification",
@@ -929,7 +906,6 @@
       "$0"
     ]
   },
-  
   "Meta-Prompt Template": {
     "prefix": "prompt-meta",
     "description": "Template for generating other prompts",
@@ -974,6 +950,36 @@
       "",
       "## Output Format",
       "Generate the prompt in ${13|markdown,XML,YAML,plain text|} format.",
+      "$0"
+    ]
+  },
+  "Agentic Prompt": {
+    "prefix": "agp",
+    "description": "Agentic Prompt template",
+    "body": [
+      "# Purpose",
+      "",
+      "qqq",
+      "",
+      "## Variables",
+      "",
+      "qqq",
+      "",
+      "## Codebase structure",
+      "",
+      "qqq",
+      "",
+      "## Instructions",
+      "",
+      "qqq",
+      "",
+      "## Workflow",
+      "",
+      "qqq",
+      "",
+      "## Report",
+      "",
+      "qqq",
       "$0"
     ]
   }
