@@ -41,12 +41,12 @@ function virtualenv_info {
     fi
 }
 
-# Build the prompt - muestra hostname solo si es remoto
+# Build the prompt - muestra usuario y hostname si es remoto
 if [[ -n "$SSH_CONNECTION" ]]; then
-    PROMPT='%F{cyan}%m%f %F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
+    PROMPT='%F{green}%n%f@%F{cyan}%m%f %F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
 %F{green}❯%f '
 else
-    PROMPT='%F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
+    PROMPT='%F{green}%n%f %F{yellow}%~%f${vcs_info_msg_0_}$(virtualenv_info)
 %F{green}❯%f '
 fi
 
