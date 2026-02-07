@@ -277,6 +277,56 @@ prefix + Alt+5              # Layout: tiled
 prefix + Space              # Ciclar entre layouts
 ```
 
+## Plugins
+
+### TPM (Tmux Plugin Manager)
+
+Los plugins se gestionan con [TPM](https://github.com/tmux-plugins/tpm). Instalación inicial:
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+Después de instalar TPM, abre tmux y presiona `prefix + I` para instalar los plugins configurados.
+
+**Nota**: Si TPM no está instalado, tmux cargará la configuración normalmente pero mostrará un error en la última línea (`run`). Esto es inofensivo.
+
+#### Gestión de Plugins
+```
+prefix + I                  # Instalar plugins nuevos
+prefix + U                  # Actualizar plugins existentes
+prefix + Alt + u            # Desinstalar plugins no listados
+```
+
+Los plugins se definen en `.tmux.conf` con `set -g @plugin 'autor/plugin'`.
+
+### tmux-resurrect
+
+Guarda y restaura el estado completo de las sesiones de tmux (sesiones, ventanas, paneles, directorios de trabajo y programas en ejecución).
+
+```
+prefix + Ctrl-s             # Guardar sesión
+prefix + Ctrl-r             # Restaurar sesión
+```
+
+**¿Qué se guarda?**
+- Todas las sesiones, ventanas y paneles
+- El directorio de trabajo de cada panel
+- El layout y tamaño de los paneles
+- El contenido visible de los paneles (`@resurrect-capture-pane-contents 'on'`)
+- Programas en ejecución (vim, less, man, etc.)
+
+Los datos se almacenan en `~/.tmux/resurrect/`.
+
+### tmux-continuum
+
+Complemento de tmux-resurrect que automatiza el guardado y la restauración:
+
+- **Guardado automático** cada 15 minutos (configurable con `@continuum-save-interval`)
+- **Restauración automática** al iniciar el servidor tmux (`@continuum-restore 'on'`)
+
+Esto significa que si reinicias la máquina o matas el servidor tmux, la próxima vez que abras tmux se restaurarán automáticamente tus sesiones.
+
 ## Solución de Problemas
 
 ### Los colores se ven mal en Vim
@@ -330,6 +380,11 @@ prefix + :set -g renumber-windows on
 | Pegar | `prefix + ]` |
 | Recargar config | `prefix + r` |
 | Modo comando | `prefix + :` |
+| **Plugins** | |
+| Guardar sesión | `prefix + Ctrl-s` |
+| Restaurar sesión | `prefix + Ctrl-r` |
+| Instalar plugins | `prefix + I` |
+| Actualizar plugins | `prefix + U` |
 
 ## Recursos
 
@@ -337,3 +392,6 @@ prefix + :set -g renumber-windows on
 - Lista de teclas: `prefix + ?`
 - GitHub del proyecto: https://github.com/tmux/tmux
 - Wiki: https://github.com/tmux/tmux/wiki
+- TPM (Plugin Manager): https://github.com/tmux-plugins/tpm
+- tmux-resurrect: https://github.com/tmux-plugins/tmux-resurrect
+- tmux-continuum: https://github.com/tmux-plugins/tmux-continuum
