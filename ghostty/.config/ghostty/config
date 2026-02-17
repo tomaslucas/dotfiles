@@ -8,9 +8,6 @@
 font-family = JetBrains Mono
 font-size = 13
 
-# Soft dark theme — easy on the eyes
-theme = catppuccin-mocha
-
 cursor-style = bar
 cursor-style-blink = true
 
