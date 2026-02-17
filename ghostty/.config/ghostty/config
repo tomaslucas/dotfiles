@@ -1,0 +1,74 @@
+# Ghostty configuration — cross-platform (Linux + macOS)
+# Deploy with: stow ghostty (from ~/dotfiles)
+
+# ── Appearance ───────────────────────────────────────────────────────────────
+
+# Ghostty 1.2+ includes built-in Nerd Font symbols.
+# Eza icons work out of the box without a patched font.
+font-family = JetBrains Mono
+font-size = 13
+
+# Soft dark theme — easy on the eyes
+theme = catppuccin-mocha
+
+cursor-style = bar
+cursor-style-blink = true
+
+window-padding-x = 8
+window-padding-y = 4
+
+# ── Splits ───────────────────────────────────────────────────────────────────
+
+focus-follows-mouse = true
+# Dim inactive splits slightly
+unfocused-split-opacity = 0.85
+
+# ── Keybindings ──────────────────────────────────────────────────────────────
+# Using ctrl as the primary modifier so keybindings are identical on
+# Linux and macOS (no reliance on super/cmd, which differs by platform).
+
+# Create splits
+keybind = ctrl+shift+o=new_split:right
+keybind = ctrl+shift+e=new_split:down
+keybind = ctrl+shift+enter=toggle_split_zoom
+keybind = ctrl+shift+w=close_surface
+
+# Navigate splits — arrow keys (already default) + vim hjkl
+keybind = ctrl+alt+h=goto_split:left
+keybind = ctrl+alt+j=goto_split:down
+keybind = ctrl+alt+k=goto_split:up
+keybind = ctrl+alt+l=goto_split:right
+
+# Cycle through splits
+keybind = ctrl+alt+n=goto_split:next
+keybind = ctrl+alt+p=goto_split:previous
+
+# Resize splits
+keybind = ctrl+alt+shift+h=resize_split:left,10
+keybind = ctrl+alt+shift+j=resize_split:down,10
+keybind = ctrl+alt+shift+k=resize_split:up,10
+keybind = ctrl+alt+shift+l=resize_split:right,10
+
+# Equalize all splits
+keybind = ctrl+alt+shift+e=equalize_splits
+
+# Tabs
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+
+# Font size
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+-=decrease_font_size:1
+keybind = ctrl+0=reset_font_size
+
+# Clipboard
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+
+# Send ESC+Enter on Shift+Enter (useful in editors and some TUI apps)
+keybind = shift+enter=text:\x1b\r
+
+# Misc
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+shift+,=reload_config
