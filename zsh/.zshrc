@@ -268,6 +268,14 @@ fi
 # FZF-based command history (Ctrl-r ya viene por defecto)
 # FZF-based file selection (Ctrl-t ya viene por defecto)
 
+export EDITOR='nvim'
+export VISUAL='nvim'
+
+# Busca archivos en el directorio actual con preview de bat
+alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
+# Abre el archivo seleccionado con fzf en el editor
+alias eff='$EDITOR $(ff)'
+
 # ===== USEFUL KEYBINDINGS =====
 
 # Ctrl-Left/Right para moverse por palabras
@@ -333,9 +341,13 @@ alias -s ts='bun'
 alias -s py='uv run'
 
 # Git shortcuts
+alias g='git'
 alias gs='git status'
 alias ga='git add'
 alias gc='git commit'
+alias gcm='git commit -m'
+alias gcam='git commit -a -m'
+alias gcad='git commit -a --amend'
 alias gp='git push'
 alias gl='git log --oneline --graph --decorate'
 alias gd='git diff'
@@ -346,6 +358,16 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 # Limpiar pantalla de verdad
 alias cls='clear && printf "\e[3J"'
+
+# En Ubuntu/Debian bat se instala como batcat
+if command -v batcat &> /dev/null && ! command -v bat &> /dev/null; then
+    alias bat='batcat'
+fi
+
+# Herramientas rápidas
+alias d='docker'
+alias t='tmux attach || tmux new -s Work'
+n() { if [ "$#" -eq 0 ]; then command nvim .; else command nvim "$@"; fi; }
 
 # ===== ZOXIDE =====
 # Reemplaza cd con navegación inteligente por historial
