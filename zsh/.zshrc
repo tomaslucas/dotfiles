@@ -383,22 +383,31 @@ fi
 
 # Layout de desarrollo: editor (izquierda) | claude (derecha) | terminal (abajo)
 function tml() {
-  local main bottom right
+  local current_dir="${PWD}"
+  local editor_pane ai_pane
+  local ai="${1:-claude}"
 
   if [ -z "$TMUX" ]; then
-    main=$(tmux new-session -d -s Work -P -F "#{pane_id}")
+    # Crear sesión y obtener ID del panel inicial
+    editor_pane=$(tmux new-session -d -s Work -c "$current_dir" -P -F "#{pane_id}")
+    # Split vertical → panel inferior ancho completo (15%)
+    tmux split-window -t "$editor_pane" -v -p 15 -c "$current_dir"
+    tmux select-pane -t "$editor_pane"
+    # Split horizontal → panel derecho para AI (30%)
+    ai_pane=$(tmux split-window -t "$editor_pane" -h -p 30 -c "$current_dir" -P -F "#{pane_id}")
+    tmux send-keys -t "$ai_pane" "$ai" C-m
+    tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
+    tmux select-pane -t "$editor_pane"
+    tmux attach-session -t Work
   else
-    main=$(tmux display-message -p "#{pane_id}")
+    # Ya dentro de tmux: capturar panel actual como editor
+    editor_pane=$(tmux display-message -p '#{pane_id}')
+    tmux split-window -v -p 15 -c "$current_dir"
+    tmux select-pane -t "$editor_pane"
+    tmux split-window -h -p 30 -c "$current_dir"
+    ai_pane=$(tmux display-message -p '#{pane_id}')
+    tmux send-keys -t "$ai_pane" "$ai" C-m
+    tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
+    tmux select-pane -t "$editor_pane"
   fi
-
-  # Split vertical primero → panel inferior de ancho completo (30%)
-  bottom=$(tmux split-window -t "$main" -v -d -p 30 -P -F "#{pane_id}")
-  # Split horizontal sobre el panel superior → nvim (izq) | claude (dcha)
-  right=$(tmux split-window -t "$main" -h -d -p 40 -P -F "#{pane_id}")
-
-  tmux send-keys -t "$main" "nvim ." Enter
-  tmux send-keys -t "$right" "claude" Enter
-  tmux select-pane -t "$bottom"
-
-  [ -z "$TMUX" ] && tmux attach-session -t Work
 }
