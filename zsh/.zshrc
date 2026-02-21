@@ -390,8 +390,11 @@ function tml() {
   local rows="${LINES:-50}"
 
   if [ -z "$TMUX" ]; then
-    # Eliminar sesión previa si existe para empezar limpio
-    tmux kill-session -t Work 2>/dev/null
+    # Si Work ya existe (restaurada por continuum o sesión previa), hacer attach
+    if tmux has-session -t Work 2>/dev/null; then
+      tmux attach-session -t Work
+      return
+    fi
     # Crear sesión y obtener ID del panel inicial
     editor_pane=$(tmux new-session -d -s Work -c "$current_dir" -x "$cols" -y "$rows" -P -F "#{pane_id}")
     # Split vertical → panel inferior ancho completo (15%)
