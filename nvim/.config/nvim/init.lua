@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -196,6 +196,24 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Open lazygit in a floating terminal
+vim.keymap.set('n', '<leader>gg', function()
+  local buf = vim.api.nvim_create_buf(false, true)
+  local width = math.floor(vim.o.columns * 0.9)
+  local height = math.floor(vim.o.lines * 0.9)
+  vim.api.nvim_open_win(buf, true, {
+    relative = 'editor',
+    width = width,
+    height = height,
+    row = math.floor((vim.o.lines - height) / 2),
+    col = math.floor((vim.o.columns - width) / 2),
+    style = 'minimal',
+    border = 'rounded',
+  })
+  vim.fn.termopen 'lazygit'
+  vim.cmd 'startinsert'
+end, { desc = '[G]it [G]ui (lazygit)' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -386,7 +404,14 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          buffers = {
+            mappings = {
+              i = { ['<C-d>'] = require('telescope.actions').delete_buffer },
+              n = { ['<C-d>'] = require('telescope.actions').delete_buffer },
+            },
+          },
+        },
         extensions = {
           ['ui-select'] = { require('telescope.themes').get_dropdown() },
         },
@@ -595,8 +620,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},        -- Python
-        rust_analyzer = {},  -- Rust   (lspconfig name; Mason package: 'rust-analyzer')
+        pyright = {}, -- Python
+        rust_analyzer = {}, -- Rust   (lspconfig name; Mason package: 'rust-analyzer')
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -617,15 +642,13 @@ require('lazy').setup({
       -- Some lspconfig server names differ from their Mason package names.
       -- Filter those out and add the correct Mason names explicitly below.
       local lspconfig_only = { rust_analyzer = true, ts_ls = true }
-      local servers_for_mason = vim.tbl_filter(function(k)
-        return not lspconfig_only[k]
-      end, vim.tbl_keys(servers or {}))
+      local servers_for_mason = vim.tbl_filter(function(k) return not lspconfig_only[k] end, vim.tbl_keys(servers or {}))
       local ensure_installed = servers_for_mason
       vim.list_extend(ensure_installed, {
-        'lua-language-server',         -- Lua language server
-        'stylua',                      -- Lua formatter
-        'rust-analyzer',               -- Rust        (lspconfig: rust_analyzer)
-        'typescript-language-server',  -- TS/JS       (lspconfig: ts_ls)
+        'lua-language-server', -- Lua language server
+        'stylua', -- Lua formatter
+        'rust-analyzer', -- Rust        (lspconfig: rust_analyzer)
+        'typescript-language-server', -- TS/JS       (lspconfig: ts_ls)
         -- You can add other tools here that you want Mason to install
       })
 
@@ -862,8 +885,24 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',
-        'python', 'rust', 'javascript', 'typescript', 'tsx' }
+      local filetypes = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'python',
+        'rust',
+        'javascript',
+        'typescript',
+        'tsx',
+      }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
@@ -885,7 +924,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`

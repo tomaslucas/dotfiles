@@ -346,3 +346,24 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 # Limpiar pantalla de verdad
 alias cls='clear && printf "\e[3J"'
+
+# ===== ZOXIDE =====
+# Reemplaza cd con navegación inteligente por historial
+# Uso: z nombre_directorio
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh)"
+fi
+
+# ===== TMUX LAYOUTS =====
+
+# Layout de desarrollo: editor (izquierda) | claude (derecha) | terminal (abajo)
+function tml() {
+  tmux split-window -v -p 30
+  tmux select-pane -U
+  tmux split-window -h -p 40
+  tmux select-pane -L
+  tmux send-keys "nvim ." Enter
+  tmux select-pane -R
+  tmux send-keys "claude" Enter
+  tmux select-pane -D
+}
