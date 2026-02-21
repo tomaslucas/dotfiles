@@ -271,8 +271,16 @@ fi
 export EDITOR='nvim'
 export VISUAL='nvim'
 
+# bat: en Ubuntu/Debian se instala como batcat; en macOS como bat (Homebrew)
+if command -v bat &> /dev/null; then
+    _BAT='bat'
+elif command -v batcat &> /dev/null; then
+    _BAT='batcat'
+    alias bat='batcat'
+fi
+
 # Busca archivos en el directorio actual con preview de bat
-alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
+alias ff="fzf --preview '$_BAT --style=numbers --color=always {}'"
 # Abre el archivo seleccionado con fzf en el editor
 alias eff='$EDITOR $(ff)'
 
@@ -358,11 +366,6 @@ alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'
 
 # Limpiar pantalla de verdad
 alias cls='clear && printf "\e[3J"'
-
-# En Ubuntu/Debian bat se instala como batcat
-if command -v batcat &> /dev/null && ! command -v bat &> /dev/null; then
-    alias bat='batcat'
-fi
 
 # Herramientas rápidas
 alias d='docker'
