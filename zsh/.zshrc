@@ -386,28 +386,27 @@ function tml() {
   local current_dir="${PWD}"
   local editor_pane ai_pane
   local ai="${1:-claude}"
-  local cols="${COLUMNS:-220}"
-  local rows="${LINES:-50}"
 
   if [ -z "$TMUX" ]; then
-    # Si Work ya existe (restaurada por continuum o sesión previa), hacer attach
+    # Si Work ya existe, hacer attach directamente
     if tmux has-session -t Work 2>/dev/null; then
       tmux attach-session -t Work
       return
     fi
-    # Crear sesión y obtener ID del panel inicial
-    editor_pane=$(tmux new-session -d -s Work -c "$current_dir" -x "$cols" -y "$rows" -P -F "#{pane_id}")
-    # Split vertical → panel inferior ancho completo (15%)
-    tmux split-window -t "$editor_pane" -v -p 15 -c "$current_dir"
-    tmux select-pane -t "$editor_pane"
-    # Split horizontal → panel derecho para AI (30%)
-    ai_pane=$(tmux split-window -t "$editor_pane" -h -p 30 -c "$current_dir" -P -F "#{pane_id}")
-    tmux send-keys -t "$ai_pane" "$ai" C-m
-    tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
-    tmux select-pane -t "$editor_pane"
-    tmux attach-session -t Work
+    # Encadenar todos los comandos en una sola llamada tmux:
+    # evita los problemas de tamaño de las sesiones detached.
+    # Orden: split -v primero → panel inferior ancho completo (15%)
+    #        split -h después → nvim (izq) | AI (dcha, 30%)
+    tmux new-session -s Work -c "$current_dir" \; \
+      split-window -v -p 15 -c "$current_dir" \; \
+      select-pane -U \; \
+      split-window -h -p 30 -c "$current_dir" \; \
+      send-keys "$ai" Enter \; \
+      select-pane -L \; \
+      send-keys "$EDITOR ." Enter \; \
+      select-pane -L
   else
-    # Ya dentro de tmux: capturar panel actual como editor
+    # Ya dentro de tmux: enfoque de Omarchy
     editor_pane=$(tmux display-message -p '#{pane_id}')
     tmux split-window -v -p 15 -c "$current_dir"
     tmux select-pane -t "$editor_pane"
