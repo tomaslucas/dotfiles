@@ -595,8 +595,8 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},       -- Python
-        rust_analyzer = {}, -- Rust
+        pyright = {},        -- Python
+        rust_analyzer = {},  -- Rust   (lspconfig name; Mason package: 'rust-analyzer')
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -612,10 +612,16 @@ require('lazy').setup({
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      -- Mason package names use hyphens; lspconfig server names use underscores.
+      -- Remove keys that don't match Mason package names and add them explicitly below.
+      local servers_for_mason = vim.tbl_filter(function(k)
+        return k ~= 'rust_analyzer'
+      end, vim.tbl_keys(servers or {}))
+      local ensure_installed = servers_for_mason
       vim.list_extend(ensure_installed, {
-        'lua_ls', -- Lua Language server
-        'stylua', -- Used to format Lua code
+        'lua_ls',        -- Lua language server
+        'stylua',        -- Lua formatter
+        'rust-analyzer', -- Rust (Mason package name differs from lspconfig's rust_analyzer)
         -- You can add other tools here that you want Mason to install
       })
 
