@@ -614,14 +614,18 @@ require('lazy').setup({
       -- You can press `g?` for help in this menu.
       -- Mason package names use hyphens; lspconfig server names use underscores.
       -- Remove keys that don't match Mason package names and add them explicitly below.
+      -- Some lspconfig server names differ from their Mason package names.
+      -- Filter those out and add the correct Mason names explicitly below.
+      local lspconfig_only = { rust_analyzer = true, ts_ls = true }
       local servers_for_mason = vim.tbl_filter(function(k)
-        return k ~= 'rust_analyzer'
+        return not lspconfig_only[k]
       end, vim.tbl_keys(servers or {}))
       local ensure_installed = servers_for_mason
       vim.list_extend(ensure_installed, {
-        'lua_ls',        -- Lua language server
-        'stylua',        -- Lua formatter
-        'rust-analyzer', -- Rust (Mason package name differs from lspconfig's rust_analyzer)
+        'lua_ls',                      -- Lua language server
+        'stylua',                      -- Lua formatter
+        'rust-analyzer',               -- Rust        (lspconfig: rust_analyzer)
+        'typescript-language-server',  -- TS/JS       (lspconfig: ts_ls)
         -- You can add other tools here that you want Mason to install
       })
 
