@@ -383,25 +383,22 @@ fi
 
 # Layout de desarrollo: editor (izquierda) | claude (derecha) | terminal (abajo)
 function tml() {
+  local main bottom right
+
   if [ -z "$TMUX" ]; then
-    tmux new-session -d -s Work
-    tmux split-window -v -p 30 -t Work
-    tmux select-pane -t Work -U
-    tmux split-window -h -p 40 -t Work
-    tmux select-pane -t Work -L
-    tmux send-keys -t Work "nvim ." Enter
-    tmux select-pane -t Work -R
-    tmux send-keys -t Work "claude" Enter
-    tmux select-pane -t Work -D
-    tmux attach-session -t Work
+    main=$(tmux new-session -d -s Work -P -F "#{pane_id}")
   else
-    tmux split-window -v -p 30
-    tmux select-pane -U
-    tmux split-window -h -p 40
-    tmux select-pane -L
-    tmux send-keys "nvim ." Enter
-    tmux select-pane -R
-    tmux send-keys "claude" Enter
-    tmux select-pane -D
+    main=$(tmux display-message -p "#{pane_id}")
   fi
+
+  # Split vertical primero → panel inferior de ancho completo (30%)
+  bottom=$(tmux split-window -t "$main" -v -d -p 30 -P -F "#{pane_id}")
+  # Split horizontal sobre el panel superior → nvim (izq) | claude (dcha)
+  right=$(tmux split-window -t "$main" -h -d -p 40 -P -F "#{pane_id}")
+
+  tmux send-keys -t "$main" "nvim ." Enter
+  tmux send-keys -t "$right" "claude" Enter
+  tmux select-pane -t "$bottom"
+
+  [ -z "$TMUX" ] && tmux attach-session -t Work
 }
