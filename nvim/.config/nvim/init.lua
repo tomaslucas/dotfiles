@@ -622,7 +622,7 @@ require('lazy').setup({
       end, vim.tbl_keys(servers or {}))
       local ensure_installed = servers_for_mason
       vim.list_extend(ensure_installed, {
-        'lua_ls',                      -- Lua language server
+        'lua-language-server',         -- Lua language server
         'stylua',                      -- Lua formatter
         'rust-analyzer',               -- Rust        (lspconfig: rust_analyzer)
         'typescript-language-server',  -- TS/JS       (lspconfig: ts_ls)
@@ -638,7 +638,7 @@ require('lazy').setup({
       end
 
       -- Special Lua Config, as recommended by neovim help docs
-      vim.lsp.config('lua_ls', {
+      vim.lsp.config('lua-ls', {
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
@@ -662,7 +662,7 @@ require('lazy').setup({
           Lua = {},
         },
       })
-      vim.lsp.enable 'lua_ls'
+      vim.lsp.enable 'lua-ls'
     end,
   },
 
