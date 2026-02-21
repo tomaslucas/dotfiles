@@ -383,12 +383,25 @@ fi
 
 # Layout de desarrollo: editor (izquierda) | claude (derecha) | terminal (abajo)
 function tml() {
-  tmux split-window -v -p 30
-  tmux select-pane -U
-  tmux split-window -h -p 40
-  tmux select-pane -L
-  tmux send-keys "nvim ." Enter
-  tmux select-pane -R
-  tmux send-keys "claude" Enter
-  tmux select-pane -D
+  if [ -z "$TMUX" ]; then
+    tmux new-session -d -s Work
+    tmux split-window -v -p 30 -t Work
+    tmux select-pane -t Work -U
+    tmux split-window -h -p 40 -t Work
+    tmux select-pane -t Work -L
+    tmux send-keys -t Work "nvim ." Enter
+    tmux select-pane -t Work -R
+    tmux send-keys -t Work "claude" Enter
+    tmux select-pane -t Work -D
+    tmux attach-session -t Work
+  else
+    tmux split-window -v -p 30
+    tmux select-pane -U
+    tmux split-window -h -p 40
+    tmux select-pane -L
+    tmux send-keys "nvim ." Enter
+    tmux select-pane -R
+    tmux send-keys "claude" Enter
+    tmux select-pane -D
+  fi
 }
