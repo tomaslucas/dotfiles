@@ -386,10 +386,12 @@ function tml() {
   local current_dir="${PWD}"
   local editor_pane ai_pane
   local ai="${1:-claude}"
+  local cols="${COLUMNS:-220}"
+  local rows="${LINES:-50}"
 
   if [ -z "$TMUX" ]; then
     # Crear sesión y obtener ID del panel inicial
-    editor_pane=$(tmux new-session -d -s Work -c "$current_dir" -x "$(tput cols)" -y "$(tput lines)" -P -F "#{pane_id}")
+    editor_pane=$(tmux new-session -d -s Work -c "$current_dir" -x "$cols" -y "$rows" -P -F "#{pane_id}")
     # Split vertical → panel inferior ancho completo (15%)
     tmux split-window -t "$editor_pane" -v -p 15 -c "$current_dir"
     tmux select-pane -t "$editor_pane"
