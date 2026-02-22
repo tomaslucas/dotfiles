@@ -379,3 +379,6 @@ if command -v zoxide &> /dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
+
+# opencode
+export PATH=/home/tlucas/.opencode/bin:$PATH
