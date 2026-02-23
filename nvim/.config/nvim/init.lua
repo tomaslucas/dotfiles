@@ -903,10 +903,19 @@ require('lazy').setup({
         'typescript',
         'tsx',
       }
-      require('nvim-treesitter').install(filetypes)
+      require('nvim-treesitter').setup()
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
         callback = function() vim.treesitter.start() end,
+      })
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'markdown',
+        callback = function()
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+          vim.wo.foldlevel = 99
+          vim.wo.foldenable = true
+        end,
       })
     end,
   },
