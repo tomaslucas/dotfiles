@@ -59,14 +59,116 @@ Lazy.nvim will bootstrap itself and install all plugins. Wait for it to finish, 
 |--------|---------|--------|
 | `render-markdown.nvim` | In-buffer markdown rendering | `<leader>um` |
 
-## Useful Commands
+## Keymaps
+
+> `<leader>` = `Space`
+
+### General
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `<Esc>` | n | Clear search highlights |
+| `<leader>q` | n | Open diagnostic quickfix list |
+| `<Esc><Esc>` | t | Exit terminal mode |
+| `<leader>gg` | n | Open lazygit |
+| `<C-h/l/j/k>` | n | Move focus between windows |
+
+### File Explorer (NeoTree)
 
 | Key | Action |
 |-----|--------|
-| `<leader>sh` | Search help (Telescope) |
+| `\` | Toggle NeoTree / reveal current file |
+
+### Telescope (Search)
+
+| Key | Action |
+|-----|--------|
+| `<leader><leader>` | Find open buffers |
 | `<leader>sf` | Search files |
 | `<leader>sg` | Live grep |
-| `<leader>um` | Toggle markdown render (in .md files) |
+| `<leader>sw` | Search word under cursor |
+| `<leader>sh` | Search help tags |
+| `<leader>sk` | Search keymaps |
+| `<leader>sd` | Search diagnostics |
+| `<leader>sr` | Resume last picker |
+| `<leader>s.` | Recent files |
+| `<leader>sc` | Search commands |
+| `<leader>sn` | Search Neovim config files |
+| `<leader>/` | Fuzzy search in current buffer |
+| `<leader>s/` | Live grep in open files only |
+
+### LSP
+
+| Key | Action |
+|-----|--------|
+| `grn` | Rename symbol |
+| `gra` | Code action |
+| `grd` | Go to definition |
+| `grr` | Go to references |
+| `gri` | Go to implementation |
+| `grD` | Go to declaration |
+| `grt` | Go to type definition |
+| `gO` | Document symbols |
+| `gW` | Workspace symbols |
+| `<leader>th` | Toggle inlay hints |
+
+### Editing
+
+| Key | Action |
+|-----|--------|
+| `<leader>f` | Format buffer |
+
+### Toggles
+
+| Key | Action |
+|-----|--------|
+| `<leader>tc` | Toggle Copilot |
+| `<leader>um` | Toggle markdown rendering (in .md files) |
+
+### Autocompletion (blink.cmp — Insert mode)
+
+| Key | Action |
+|-----|--------|
+| `<C-y>` | Accept completion |
+| `<C-space>` | Open completion menu |
+| `<C-n>` / `<Down>` | Next item |
+| `<C-p>` / `<Up>` | Previous item |
+| `<C-e>` | Dismiss menu |
+| `<C-k>` | Toggle signature help |
+| `<Tab>` / `<S-Tab>` | Move within snippet |
+
+### Disabled Plugins (uncomment to activate)
+
+**gitsigns** (`init.lua:937`):
+
+| Key | Action |
+|-----|--------|
+| `]c` / `[c` | Next / previous git hunk |
+| `<leader>hs/hr` | Stage / reset hunk |
+| `<leader>hS/hR` | Stage / reset buffer |
+| `<leader>hu` | Undo stage hunk |
+| `<leader>hp` | Preview hunk |
+| `<leader>hb` | Blame current line |
+| `<leader>hd/hD` | Diff against index / last commit |
+| `<leader>tb` | Toggle line blame |
+| `<leader>tD` | Toggle show deleted |
+
+**DAP Debugger** (`init.lua:931`):
+
+| Key | Action |
+|-----|--------|
+| `<F5>` | Start / continue |
+| `<F1>` | Step into |
+| `<F2>` | Step over |
+| `<F3>` | Step out |
+| `<F7>` | Toggle DAP UI |
+| `<leader>b` | Toggle breakpoint |
+| `<leader>B` | Conditional breakpoint |
+
+## Neovim Commands
+
+| Command | Action |
+|---------|--------|
 | `:Lazy` | Plugin manager UI |
 | `:Mason` | LSP/tool installer |
 | `:checkhealth` | Diagnose issues |
